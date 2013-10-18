@@ -1,19 +1,19 @@
 <?php
 
-function r($path, $closure = null) {
-    static $rts = [];
+function router($path, $closure = null) {
+    static $routes = [];
 
-    if ($closure) return $rts[$path] = $closure;
+    if ($closure) return $routes[$path] = $closure;
 
-    $rt = getenv('REQUEST_METHOD').' '.$path;
+    $route = getenv('REQUEST_METHOD').' '.$path;
 
-    if (isset($rts[$rt]))
-        $rts[$rt]();
+    if (isset($routes[$route]))
+        $routes[$route]();
 }
 
-r('GET /route/', function() {
+router('GET /route/', function() {
     echo 'home page!';
 });
 
 // Call up the routes
-r(getenv('REQUEST_URI'));
+router(getenv('REQUEST_URI'));
