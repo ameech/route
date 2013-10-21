@@ -1,19 +1,19 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
 
-function router($path, $closure = null) {
-    static $routes = [];
-
-    if ($closure) return $routes[$path] = $closure;
-
-    $route = getenv('REQUEST_METHOD').' '.$path;
-
-    if (isset($routes[$route]))
-        $routes[$route]();
+function router($method, $path, $routes) {
+    isset($routes[$method][$path]) && $routes[$method][$path]();
 }
 
-router('GET /route/', function() {
-    echo 'home page!';
-});
-
 // Call up the routes
-router(getenv('REQUEST_URI'));
+router(getenv('REQUEST_METHOD'), getenv('REQUEST_URI'), [
+    'GET' => [
+        '/route/' => function() {
+            echo 'home page!';
+        },
+        '/route/index.php/test' => function() {
+            echo 'Test Page!';
+        }
+    ]
+]);
